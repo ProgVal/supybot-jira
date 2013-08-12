@@ -43,7 +43,6 @@ except:
     # without the i18n module
     _ = lambda x:x
 
-snarfRegex = 'CLB-[0-9]+'
 
 class Jira(callbacks.PluginRegexp):
     """This plugin will automatically snarf Jira ticket numbers, and reply with
@@ -63,7 +62,7 @@ class Jira(callbacks.PluginRegexp):
         self.jira = JIRA(options = options, basic_auth = auth)
 
     def getIssue(self, irc, msg, match):
-        """Get a Jira Issue"""
+        """(?P<issue>CLB-[0-9]+)"""
         if not ircutils.isChannel(msg.args[0]):
             return
         issueName = match.group('issue')
@@ -95,7 +94,6 @@ class Jira(callbacks.PluginRegexp):
                         % (issuetype, key, name, assignee, displayTime, status,
                             url))
             irc.reply(replytext, prefixNick=False)
-    getIssue.__doc__ = '(?P<issue>%s)' % snarfRegex
 
 Class = Jira
 
